@@ -1,0 +1,198 @@
+<template name="videos">
+    <div class="gtgn video wrapper center aligned sixteen wide column">
+        <h1>Videos</h1>
+        <div class="ui top attached tabular menu" style="border-bottom: none; margin-bottom: -5px;">
+            {{#each categories}}
+            <a class="{{first}}item" data-tab="{{this}}">{{this}}</a>
+            {{/each}}
+        </div>
+        {{#each categories}}
+        <div class="gtgn videos ui four column stackable centered bottom attached {{first}}tab grid" data-tab="{{this}}">
+            {{#each playlists}}
+            <div class="center aligned column">
+                <a class="test img ui fade reveal" href="/videos/{{_id}}">
+                    <img class="visible content" src="{{logo}}">
+                    <img class="hidden content" src="{{image}}">
+                </a>
+            </div>
+            {{/each}}
+            <div class="center aligned ghost column"></div>
+            <div class="center aligned ghost column"></div>
+            <div class="center aligned ghost column"></div>
+        </div>
+        {{/each}}
+    </div>
+</template>
+<template name="playlistnav">
+    <a class="ui small videonav image" href="/videos/{{_id}}">
+        <img src="{{icon}}">
+    </a>
+</template>
+<template name="playlist">
+    <div class="gtgn video wrapper center aligned sixteen wide column">
+        <div class="ui top attached tabular menu">
+            {{#each categories}}
+            <a class="{{first}}item" data-tab="{{this}}">{{this}}</a>
+            {{/each}}
+        </div>
+        {{#each categories}}
+        <div class="gtgn videos scrollable ui bottom attached {{first}}tab segment" data-tab="{{this}}">
+            {{#each playlists}}
+            {{> playlistnav}}
+            {{/each}}
+        </div>
+        {{/each}}
+        <h3>{{name}}</h3>
+        <div class="player">
+            {{> youtubeplayer active}}
+        </div>
+        <div class="playlist ui cards">
+            {{#each videos}}
+            <div class="video card">
+                <div class="image">
+                    <img src="{{bestres}}">
+                </div>
+                <div class="content">
+                    <span class="header">{{title}}</span>
+                </div>
+            </div>
+            {{/each}}
+            <div class="video ghost card"></div>
+            <div class="video ghost card"></div>
+            <div class="video ghost card"></div>
+        </div>
+    </div>
+</template>
+
+<template name="youtubeplayer">
+    <h4>{{title}}</h4>
+    <div class="youtube wrapper">
+        <iframe name="youtube" src="//www.youtube.com/embed/{{resourceId.videoId}}" frameborder="0"></iframe>
+    </div>
+</template>
+
+<template name="adminmanageplaylists">
+    <div class="ui inverted vertical visible left sidebar menu">
+        <div class="item">
+            <div class="ui inverted header">Videos</div>
+            <div class="ui vertical orange secondary pointing menu">
+                {{#each playlists}}
+                <a href="/admin/videos/{{_id}}" class="item">{{category}} - {{name}}</a>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="ui inverted fixed menu">
+        {{> adminnav}}
+    </div>
+    <div class="pusher">
+        <div class="ui segment">
+            {{> addplaylist}}
+        </div>
+    </div>
+</template>
+
+<template name="admineditplaylist">
+    <div class="ui inverted vertical visible left sidebar menu">
+        <div class="item">
+            <div class="ui inverted header">Videos</div>
+            <div class="ui vertical orange secondary pointing menu">
+                {{#each playlists}}
+                <a href="/admin/videos/{{_id}}" class="item">{{category}} - {{name}}</a>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="ui inverted fixed menu">
+        {{> adminnav}}
+    </div>
+    <div class="pusher">
+        <div class="ui segment">
+            {{> editplaylist}}
+        </div>
+    </div>
+</template>
+
+<template name="addplaylist">
+    <div class="ui form">
+        <h3>Add Playlist</h3>
+        <div class="field">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="Name">
+        </div>
+        <div class="field">
+            <label>Category</label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="category">
+                <div class="default text">Category</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    {{#each categories}}
+                    <div class="item" data-value="{{this}}">{{this}}</div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label>YouTube Playlist ID</label>
+            <input type="text" name="id" placeholder="YouTube Playlist ID">
+        </div>
+        <div class="field">
+            <label>Icon</label>
+            <input type="text" name="icon" placeholder="/path/to/icon">
+        </div>
+        <div class="field">
+            <label>Logo</label>
+            <input type="text" name="logo" placeholder="/path/to/logo">
+        </div>
+        <div class="field">
+            <label>Image</label>
+            <input type="text" name="image" placeholder="/path/to/image">
+        </div>
+        <button class="ui green button" name="add">Add</button>
+    </div>
+</template>
+
+<template name="editplaylist">
+    <div class="ui form">
+        <h3>Edit Playlist</h3>
+        <div class="field">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="Name" value="{{name}}">
+        </div>
+        <div class="field">
+            <label>Category</label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="category" value="{{category}}">
+                <div class="default text">Category</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    {{#each categories}}
+                    <div class="item" data-value="{{this}}">{{this}}</div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label>YouTube Playlist ID</label>
+            <input type="text" name="id" placeholder="YouTube Playlist ID" value="{{firstplaylistid}}">
+        </div>
+        <div class="field">
+            <label>Icon</label>
+            <input type="text" name="icon" placeholder="/path/to/icon" value="{{icon}}">
+        </div>
+        <div class="field">
+            <label>Logo</label>
+            <input type="text" name="logo" placeholder="/path/to/logo" value="{{logo}}">
+        </div>
+        <div class="field">
+            <label>Image</label>
+            <input type="text" name="image" placeholder="/path/to/image" value="{{image}}">
+        </div>
+        <button class="ui green button" name="update">Update</button>
+        <button class="ui red button" name="delete">Delete</button>
+        <div class="ui popup">
+            <button class="ui red button" name="confirm">Confirm Delete Playlist (Cannot Be Undone)</button>
+        </div>
+    </div>
+</template>

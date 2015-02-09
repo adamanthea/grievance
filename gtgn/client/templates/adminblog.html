@@ -1,0 +1,306 @@
+<template name="adminblog">
+    <div class="ui inverted vertical visible left sidebar menu">
+        {{> myblogposts}}
+        {{#if blogeditor}}
+        {{> pendingblogposts}}
+        {{> publishedblogposts}}
+        {{/if}}
+    </div>
+    <div class="ui inverted fixed menu">
+        {{> adminnav}}
+    </div>
+    <div class="pusher">
+        <div class="ui segment">
+            {{> addblog}}
+        </div>
+        {{#if admin}}
+        <div class="ui segment">
+            {{> addcolumn}}
+        </div>
+        {{/if}}
+    </div>
+</template>
+
+<template name="adminmanageblogpost">
+    <div class="ui inverted vertical visible left sidebar menu">
+        {{> myblogposts}}
+        {{#if blogeditor}}
+        {{> pendingblogposts}}
+        {{> publishedblogposts}}
+        {{/if}}
+    </div>
+    <div class="ui inverted fixed menu">
+        {{#if editable}}
+        <button class="ui tiny orange button" name="edit">Edit</button>
+        {{/if}}
+        {{#if canupdatecolumn}}
+        <button class="ui tiny orange button" name="editcolumn">Change Column</button>
+        {{/if}}
+        {{#if reviewable}}
+        <button class="ui tiny orange button" name="submit">Submit For Review</button>
+        {{/if}}
+        {{#if rejectable}}
+        <button class="ui tiny orange button" name="reject">Reject</button>
+        {{/if}}
+        {{#if publishable}}
+        <button class="ui tiny orange button" name="publish">Publish</button>
+        {{/if}}
+        {{#if admin}}
+        <button class="ui tiny orange top left pointing dropdown button" name="delete">
+            Delete
+            <div class="menu">
+                <div class="item">
+                    <button class="ui red button" name="confirm">Confirm Delete Post (Cannot Be Undone)</button>
+                </div>
+            </div>
+        </button>
+        {{/if}}
+        {{> adminnav}}
+    </div>
+    <div class="pusher">
+        <div class="ui segment">
+            {{> previewblog}}
+        </div>
+    </div>
+</template>
+
+<template name="adminupdateblogpostcolumn">
+    <div class="ui inverted vertical visible left sidebar menu">
+        {{> myblogposts}}
+        {{#if blogeditor}}
+        {{> pendingblogposts}}
+        {{> publishedblogposts}}
+        {{/if}}
+    </div>
+    <div class="ui inverted fixed menu">
+        {{> adminnav}}
+    </div>
+    <div class="pusher">
+        <div class="ui segment">
+            {{> editblogcolumn}}
+        </div>
+    </div>
+</template>
+
+<template name="admineditblogpost">
+    <div class="ui inverted fixed menu">
+        <button class="ui tiny orange button" name="save">Save</button>
+        {{#if blogeditor}}
+        {{#if pending}}
+        <button class="ui tiny orange button" name="reject">Reject</button>
+        {{/if}}
+        <button class="ui tiny orange button" name="publish">Publish</button>
+        {{else}}
+        <button class="ui tiny orange button" name="submit">Submit For Review</button>
+        {{/if}}
+        {{> adminnav}}
+    </div>
+    <main class="editor">
+        <section class="entry-container">
+            <header>
+                <section class="box entry-title">
+                    <input id="entry-title" class="" placeholder="Your Post Title" tabindex="1" type="text">
+                </section>
+            </header>
+            {{> GhostEditor}}
+        </section>
+    </main>
+</template>
+
+<template name="adminpublishblogpost">
+    <div class="ui inverted vertical visible left sidebar menu">
+        {{> myblogposts}}
+        {{#if blogeditor}}
+        {{> pendingblogposts}}
+        {{> publishedblogposts}}
+        {{/if}}
+    </div>
+    <div class="ui inverted fixed menu">
+        {{> adminnav}}
+    </div>
+    <div class="pusher">
+        <div class="ui segment">
+            {{> publishblog}}
+        </div>
+    </div>
+</template>
+
+<template name="myblogposts">
+    <div class="item">
+        <div class="ui inverted header">My Blog Posts</div>
+        <div class="ui vertical orange secondary pointing menu">
+            {{#each posts}}
+            {{#if canedit}}
+            <a href="/admin/blogs/{{_id}}" class="item">{{prune draft_title}}<span>{{showstate}}</span></a>
+            {{else}}
+            <span class="item">{{prune draft_title}}<span>{{showstate}}</span></span>
+            {{/if}}
+            {{/each}}
+            {{#if isReady}}
+            {{#if hasMorePosts}}
+            <a class="item load-more" href="#">Load More</a>
+            {{/if}}
+            {{else}}
+            <div class="item loading">{{>spinner}}</div>
+            {{/if}}
+        </div>
+    </div>
+</template>
+
+<template name="pendingblogposts">
+    <div class="item">
+        <div class="ui inverted header">Pending Blog Posts</div>
+        <div class="ui vertical orange secondary pointing menu">
+            {{#each posts}}
+            <a href="/admin/blogs/{{_id}}" class="item">{{prune draft_title}}</a>
+            {{/each}}
+            {{#if isReady}}
+            {{#if hasMorePosts}}
+            <a class="item load-more" href="#">Load More</a>
+            {{/if}}
+            {{else}}
+            <div class="item loading">{{>spinner}}</div>
+            {{/if}}
+        </div>
+    </div>
+</template>
+
+<template name="publishedblogposts">
+    <div class="item">
+        <div class="ui inverted header">Published Blog Posts</div>
+        <div class="ui vertical orange secondary pointing menu">
+            {{#each posts}}
+            <a href="/admin/blogs/{{_id}}" class="item">{{prune draft_title}}</a>
+            {{/each}}
+            {{#if isReady}}
+            {{#if hasMorePosts}}
+                <a class="item load-more" href="#">Load More</a>
+            {{/if}}
+            {{else}}
+                <div class="item loading">{{>spinner}}</div>
+            {{/if}}
+        </div>
+    </div>
+</template>
+
+<template name="addblog">
+    <div class="ui form">
+        <h4 class="ui header">New Blog Post</h4>
+        <div class="field">
+            <label>Column Name</label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="column">
+                <div class="default text">Column Name</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    {{#each columns}}
+                    {{> columnselect}}
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label>Hero Image</label>
+            <input type="text" name="hero" placeholder="URL for Hero Image">
+        </div>
+        <button class="ui green button" name="next">Next</button>
+    </div>
+</template>
+
+<template name="editblogcolumn">
+    <div class="ui form">
+        <h4 class="ui header">Update Column: {{title}}</h4>
+        <div class="field">
+            <label>Column Name</label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="column" value="{{column_id}}">
+                <div class="default text">Column Name</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    {{#each columns}}
+                    {{> columnselect}}
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label>Hero Image</label>
+            <input type="text" name="hero" placeholder="URL for Hero Image" value="{{hero}}">
+        </div>
+        <button class="ui green button" name="next">Save</button>
+    </div>
+</template>
+
+<template name="addcolumn">
+    <div class="ui form">
+        <h4 class="ui header">Add Column</h4>
+        <div class="field">
+            <label>Column Name</label>
+            <input type="text" name="columnname" placeholder="Column Name">
+        </div>
+        <button class="ui green button" name="addcolumn">Add Column</button>
+    </div>
+</template>
+
+<template name="publishblog">
+    <div class="ui form">
+        <h4 class="ui header">{{column_name}}: {{draft_title}}</h4>
+        <div class="field">
+            <label>Publish Date</label>
+            <input type="text" name="publishdate" placeholder="MM-DD-YYYY HH:MM" value="{{datetostring publish_date}}">
+        </div>
+        <button class="ui green button" name="publish">Publish</button>
+    </div>
+</template>
+
+<template name="previewblog">
+    <h1 class="ui header">
+        {{column_name}}: {{draft_title}}
+        <div class="sub header">By {{author_name}} ({{livestamp created_date}})</div>
+    </h1>
+    <div class="hero">
+        <img src="{{hero}}">
+    </div>
+    <div class="content">
+        {{#markdown}}{{draft_body}}{{/markdown}}
+    </div>
+</template>
+
+<template name="columnselect">
+    <div class="item" data-value="{{_id}}">{{name}}</div>
+</template>
+
+<template name="blogguide">
+    <div class="blog guide ui modal">
+        <i class="close icon"></i>
+        <div class="header">
+            Guide
+        </div>
+        <div class="content">
+            <div class="description">
+                <div class="ui header">Creating A New Post</div>
+                <p>All posts require a column and a hero image. Columns are for categorizing your post. If an appropriate column doesn't exist, speak to a site admin about having a new one created. Hero images are the featured images at the top of all posts. They must adhere to certain size specifications (tbd), and for the time being should be hosted on an external service (<a href="http://imgur.com" target="_blank">Imgur strongly suggested</a>) or sent to Adamanthea to be uploaded.</p>
+                <div class="ui header">Blog editor and formatting information</div>
+                <p>After you choose a column and hero image for your post, you'll be presented with the opportunity to write your post. All posts require a title, and when displayed will appear as Column Name: Your Post Title.</p>
+                <p>This blog uses an editor called GhostDown. In the GhostDown editor, you're presented with three fields: A title field across the top, a markdown field on the left for entering your post contents, and a preview field on the right for previewing how your content will look. GhostDown supports a formatting syntax called markdown, which you can <a href="http://support.ghost.org/markdown-guide/" target="_blank">learn more about by reading this guide.</a> The guide is mostly accurate, but please be aware of a few limitations:</p>
+                <ul>
+                    <li>Image uploading isn't supported yet, so you will need to host your images on <a href="http://imgur.com" target="_blank">Imgur</a> for the time being.</li>
+                    <li>Some things, such as strikethrough, work on the post page but do not work in the editor's preview field. This is something that will be fixed in the future.</li>
+                    <li>Blog posts support <a href="http://emoji.codes/" target="_blank">EmojiOne emojis</a>, but they don't show up in the editor preview.</li>
+                    <li>More features, such as embedding videos and photo galleries, are planned but not yet implemented.</li>
+                </ul>
+                <p>You are also required to provide a breakpoint in your article. The purpose of the breakpoint is to specify how much of your article should be shown as a preview or excerpt. Typically this will be the first 1-2 paragraphs. Please don't include any images, videos, or other rich content above the breakpoint. To specify a breakpoint, enter <span class="code">[breakpoint]</span> on a line by itself. The editor preview and the blog post preview in the admin panel won't cut out the breakpoint, but it will get handled properly when your post gets published.</p>
+                <div class="ui header">Draft, Pending, Published, Rejected</div>
+                <p>Blog posts have four states: Draft, Pending, Published, and Rejected. The states indicate where in the publishing workflow a given post is.</p>
+                <p>Draft posts are posts that a writer has started working on, but that aren't yet ready for the editors. Writers can keep posts in the draft state for as long as they want and can make as many edits to them as they want. Drafts are private, so only a draft post's author can read it.</p>
+                <p>When a post is ready, it can be submitted for review by the editors, at which point it enters the pending state. When a post is pending, the post's author can no longer make changes to it. The editor will read the post, make corrections, and then choose to either publish or reject the post.</p>
+                <p>If an editor rejects a post, it will go back to the author with the rejected state. The author should make any needed edits and re-submit the post for approval.</p>
+                <p>Once a post is published, it will appear on the public site. Published posts may not show up immediately, as editors have the option to set the publish date to the future. A note on publish dates for the editors: The date should be entered in 24-hour format, and should be in UTC, so if you want the post to go live at 5pm Central on February 14th, you would enter the publish date as 02-14-2015 23:00 (because 5pm CST is 11pm UTC).</p>
+                <p>Once a post is published, the author can make additional edits. These edits will show up as a draft, and must go through the approval process just like with a new post. The difference is that the published version of the post will stay live until the updates are approved.</p>
+                <div class="ui header">Bugs and reporting them</div>
+                <p>This site is new and completely custom, and while we do our best to test things, chances are you will encounter bugs. Please <a href="https://github.com/adamanthea/grievance/issues" target="_blank">report any issues</a> you find, and be as detailed as you can when describing what went wrong. Screenshots, error messages, and steps to reproduce the issue are all helpful and encouraged.</p>
+                <p style='font-weight: bold;'>Please report all issues on <a href="https://github.com/adamanthea/grievance/issues" target="_blank">GitHub</a>. Do not report them in the forums, in GroupMe, or by telling me in TeamSpeak.</p>
+            </div>
+        </div>
+    </div>
+</template>

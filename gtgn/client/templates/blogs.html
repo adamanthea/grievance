@@ -1,0 +1,148 @@
+<template name="blogs">
+    <div class="equal height row">
+        <div class="blog list ten wide column">
+            {{#each posts}}
+            {{> showblogpost post=this}}
+            {{/each}}
+            {{#if isReady}}
+            {{#if hasMorePosts}}
+            <div class="center aligned column">
+                <a class="load-more" href="#">Load More</a>
+            </div>
+            {{/if}}
+            {{else}}
+            <div class="center aligned column">
+                <div class="loading">{{>spinner}}</div>
+            </div>
+            {{/if}}
+        </div>
+        <div class="blog side two wide column">
+            <h3 class="ui header">Columns</h3>
+            {{#each columns}}
+            <div><a href="/blogs/postsin/{{_id}}">{{name}}</a></div>
+            {{/each}}
+            <h3 class="ui header">Writers</h3>
+            {{#each writers}}
+            <div><a href="/blogs/postsby/{{_id}}">{{profile.displayname}}</a></div>
+            {{/each}}
+        </div>
+    </div>
+</template>
+
+<template name="blogpostsbyauthor">
+    <div class="equal height row">
+        <div class="blog list ten wide column">
+            <h1 class="ui header">Posts by {{author.profile.displayname}}</h1>
+            {{#each posts}}
+            {{> showblogpost post=this}}
+            {{/each}}
+            {{#if isReady}}
+            {{#if hasMorePosts}}
+            <div class="center aligned column">
+                <a class="load-more" href="#">Load More</a>
+            </div>
+            {{/if}}
+            {{else}}
+            <div class="center aligned column">
+                <div class="loading">{{>spinner}}</div>
+            </div>
+            {{/if}}
+        </div>
+        <div class="blog side two wide column">
+            <h3 class="ui header">Columns</h3>
+            {{#each columns}}
+            <div><a href="/blogs/postsin/{{_id}}">{{name}}</a></div>
+            {{/each}}
+            <h3 class="ui header">Writers</h3>
+            {{#each writers}}
+            <div><a href="/blogs/postsby/{{_id}}">{{profile.displayname}}</a></div>
+            {{/each}}
+        </div>
+    </div>
+</template>
+
+<template name="blogpostsbycolumn">
+    <div class="equal height row">
+        <div class="blog list ten wide column">
+            <h1 class="ui header">Posts in {{column.name}}</h1>
+            {{#each posts}}
+            {{> showblogpost post=this}}
+            {{/each}}
+            {{#if isReady}}
+            {{#if hasMorePosts}}
+            <div class="center aligned column">
+                <a class="load-more" href="#">Load More</a>
+            </div>
+            {{/if}}
+            {{else}}
+            <div class="center aligned column">
+                <div class="loading">{{>spinner}}</div>
+            </div>
+            {{/if}}
+        </div>
+        <div class="blog side two wide column">
+            <h3 class="ui header">Columns</h3>
+            {{#each columns}}
+            <div><a href="/blogs/postsin/{{_id}}">{{name}}</a></div>
+            {{/each}}
+            <h3 class="ui header">Writers</h3>
+            {{#each writers}}
+            <div><a href="/blogs/postsby/{{_id}}">{{profile.displayname}}</a></div>
+            {{/each}}
+        </div>
+    </div>
+</template>
+
+<template name="blogpost">
+    <div class="equal height row">
+        <div class="blog list ten wide column">
+            {{> showblogpost post=this body="full"}}
+        </div>
+        <div class="blog side two wide column">
+            <h3 class="ui header">Columns</h3>
+            {{#each columns}}
+            <div><a href="/blogs/postsin/{{_id}}">{{name}}</a></div>
+            {{/each}}
+            <h3 class="ui header">Writers</h3>
+            {{#each writers}}
+            <div><a href="/blogs/postsby/{{_id}}">{{profile.displayname}}</a></div>
+            {{/each}}
+        </div>
+    </div>
+</template>
+
+<template name="showblogpost">
+    <div class="blog post ui basic segment">
+        <h1 class="ui header">
+            {{post.column_name}}: {{post.publish_title}}
+            <div class="sub header">By {{post.author_name}} ({{livestamp post.publish_date}})</div>
+        </h1>
+        <div class="hero">
+            <img src="{{post.hero}}">
+        </div>
+        <div class="content">
+            {{#if equals body "full"}}
+            {{#markdown}}{{full}}{{/markdown}}
+            {{else}}
+            {{#markdown}}{{excerpt}}{{/markdown}}
+            <div class="read more"><a href="/blogs/post/{{post._id}}">Read More</a></div>
+            {{/if}}
+        </div>
+        {{#if equals body "full"}}
+        <div class="ui divider"></div>
+        <div class="bio ui items">
+            <div class="item">
+                <div class="ui tiny circular image">
+                    <img src="{{post.author_gravatar}}">
+                </div>
+                <div class="content">
+                    <a class="header" href="/blogs/postsby/{{post.author_id}}">About {{post.author_name}}</a>
+                    <div class="description">
+                        {{post.author_bio}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</template>

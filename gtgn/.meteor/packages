@@ -1,0 +1,26 @@
+# Meteor packages used by this project, one per line.
+# Check this file (and the other files in this directory) into your repository.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+meteor-platform
+nooitaf:semantic-ui
+iron:router
+sacha:spin
+useraccounts:core
+accounts-password
+useraccounts:semantic-ui
+copleykj:jquery-autosize
+jparker:gravatar
+reactive-var
+momentjs:moment
+meteorhacks:kadira
+meteorhacks:zones
+adamanthea:markdown
+chrismbeckett:toastr
+adamanthea:underscore.string
+hpx7:youtube-iframe-player
+adamanthea:smoothdivscroll
+adamanthea:ghostdown
+copleykj:livestamp

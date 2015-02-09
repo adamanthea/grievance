@@ -1,0 +1,15 @@
+post:
+
+author_id
+author_name
+author_gravatar
+column_id
+column_name
+state
+hero
+draft_title
+draft_body
+created_date
+publish_date
+publish_title
+publish_body

@@ -1,0 +1,161 @@
+<template name="adminaccount">
+    <div class="ui inverted fixed menu">
+        {{> adminnav}}
+    </div>
+    <div class="admin container">
+        <div class="ui segment">
+            {{> editme}}
+        </div>
+    </div>
+</template>
+
+<template name="adminusers">
+    <div class="ui inverted vertical visible left sidebar menu">
+        <div class="item">
+            <div class="ui inverted header">Users</div>
+            <div class="ui vertical orange secondary pointing menu">
+                {{#each users}}
+                <a href="/admin/users/{{_id}}" class="item">{{profile.displayname}}</a>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="ui inverted fixed menu">
+        {{> adminnav}}
+    </div>
+    <div class="pusher">
+        <div class="ui segment">
+            {{> adduser}}
+        </div>
+    </div>
+</template>
+
+<template name="adminedituser">
+    <div class="ui inverted vertical visible left sidebar menu">
+        <div class="item">
+            <div class="ui inverted header">Users</div>
+            <div class="ui vertical orange secondary pointing menu">
+                {{#each users}}
+                <a href="/admin/users/{{_id}}" class="item">{{profile.displayname}}</a>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="ui inverted fixed menu">
+        {{> adminnav}}
+    </div>
+    <div class="pusher">
+        <div class="ui segment">
+            {{> edituser}}
+        </div>
+    </div>
+</template>
+
+<template name="adduser">
+    <div class="ui form">
+        <div class="field">
+            <label>Email Address</label>
+            <input type="text" name="email" placeholder="Email Address">
+        </div>
+        <h5 class="ui header">Permissions</h5>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="blog writer">
+                <label>Blog Writer</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="blog editor">
+                <label>Blog Editor</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="reviews writer">
+                <label>Reviews Writer</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="reviews editor">
+                <label>Reviews Editor</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="admin">
+                <label>Site Admin</label>
+            </div>
+        </div>
+        <button class="ui green button" name="submit">Add User</button>
+    </div>
+</template>
+
+<template name="edituser">
+    <div class="ui form">
+        <div class="field">
+            <label>Display Name</label>
+            <input type="text" name="displayname" placeholder="Display Name" value="{{profile.displayname}}">
+        </div>
+        <div class="field">
+            <label>Bio</label>
+            <textarea name="bio" placeholder="Bio">{{profile.bio}}</textarea>
+        </div>
+        <h5 class="ui header">Permissions</h5>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="blog writer" checked={{blogwriter}}>
+                <label>Blog Writer</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="blog editor" checked={{blogeditor}}>
+                <label>Blog Editor</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="reviews writer" checked={{reviewswriter}}>
+                <label>Reviews Writer</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="reviews editor" checked={{reviewseditor}}>
+                <label>Reviews Editor</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="admin" checked={{admin}}>
+                <label>Site Admin</label>
+            </div>
+        </div>
+        <button class="ui green button" name="submit">Update User</button>
+        <button class="ui red button" name="delete">Delete User</button>
+        <div class="ui popup">
+            <button class="ui red button" name="confirm">Confirm Delete User (Cannot Be Undone)</button>
+        </div>
+    </div>
+</template>
+
+<template name="editme">
+    <div class="ui form">
+        <div class="field">
+            <label>Your Display Name</label>
+            <input type="text" name="displayname" placeholder="Display Name" value="{{profile.displayname}}">
+        </div>
+        <div class="field">
+            <label>Your Bio</label>
+            <textarea name="bio" placeholder="Bio">{{profile.bio}}</textarea>
+        </div>
+        <button class="ui green button" name="submit">Update</button>
+        <div class="ui divider"></div>
+        <div class="field">
+            <label>Your <a href="http://en.gravatar.com">Gravatar</a></label>
+            <img class="ui small circular image" src="{{profile.gravatar}}?s=150">
+        </div>
+    </div>
+</template>

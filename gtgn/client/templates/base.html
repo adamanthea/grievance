@@ -1,0 +1,134 @@
+<head>
+    <title>Grievance</title>
+    <noscript>You must enable javascript to view this site.</noscript>
+</head>
+
+<body>
+</body>
+
+<template name="BareLayout">
+    {{> yield}}
+    {{> blogguide}}
+</template>
+
+<template name="MainLayout">
+    {{> nav}}
+    <div class="gradient mask"></div>
+    <div class="ui stackable page grid">
+        <div class="gtgn logo sixteen wide column">
+            <a href="/" class="gtgn logo"><img src="/images/website_logo_transparent.png" style="width: 100%;"></a>
+        </div>
+        {{> yield}}
+        {{> footer}}
+    </div>
+</template>
+
+<template name="accessDenied">
+    <div class="sixteen wide center aligned column">
+        <div class="at-form ui large fluid form segment">
+            <h1 class="ui center aligned header">Welcome to Grievance</h1>
+            <div class="ui center aligned">
+                {{> atNavButton}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="loading">
+    <div class="sixteen wide column">
+        {{> spinner}}
+    </div>
+</template>
+
+<template name="notFound">
+    <div class="not-found jumbotron">
+        <h2>404</h2>
+        <p>Sorry, we couldn't find a page at this address.</p>
+    </div>
+</template>
+
+<template name="nav">
+    <div class="ui stackable fixed inverted menu page grid">
+        {{#if currentUser}}
+        <div class="ui orange secondary pointing logged in menu">
+            <a href="/admin" class="item"><i class="configure icon"></i></a>
+            <a href="/sign-out" class="item"><i class="sign out icon"></i></a>
+        </div>
+        {{/if}}
+        <div class="menu">
+            <div class="ui orange secondary pointing left menu">
+                <span class="follow us item">
+                    <a href="https://www.facebook.com/GTGNTV" target="_blank"><img src="//i.imgur.com/cezFQbF.png"></a>
+                    <a href="https://www.youtube.com/grievancegaming" target="_blank"><img src="//i.imgur.com/gMCzDgd.png"></a>
+                    <a href="https://twitter.com/GTGNetworkTV" target="_blank"><img src="//i.imgur.com/JwI1qB7.png"></a>
+                    <a href="http://www.twitch.tv/grievance" target="_blank"><img src="//i.imgur.com/mNDdypl.png"></a>
+                </span>
+            </div>
+            <div class="ui orange secondary pointing right menu">
+                <a class="item" href="/streams">Streams</a>
+                <a class="item" href="/videos">Videos</a>
+                <a class="item" href="/blogs">Blogs</a>
+                <a class="item" href="#">Reviews</a>
+                <a class="item" href="#">Community</a>
+                <a class="item" href="#">About Us</a>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="footer">
+    <div class="footer six column row">
+        <div class="footer column">
+            <h3>Location</h3>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+        </div>
+        <div class="footer column">
+            <h3>Location</h3>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+        </div>
+        <div class="footer column">
+            <h3>Location</h3>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+        </div>
+        <div class="footer column">
+            <h3>Location</h3>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+        </div>
+        <div class="footer column">
+            <h3>Location</h3>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+        </div>
+        <div class="footer column">
+            <h3>Location</h3>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+            <a href="#">A Link</a>
+        </div>
+    </div>
+    <div class="legal sixteen wide center aligned column">
+        <h4>GTGN.TV &copy; 2015<span>|</span><a href="#">Privacy Policy</a></h4>
+    </div>
+</template>
+
+<template name="ghostdowntest">
+    <main class="editor">
+        <section class="entry-container">
+            <header>
+                <section class="box entry-title">
+                    <input id="entry-title" class="" placeholder="Your Post Title" tabindex="1" type="text">
+                </section>
+            </header>
+            {{> GhostEditor}}
+        </section>
+    </main>
+</template>
